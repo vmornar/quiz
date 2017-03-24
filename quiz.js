@@ -75,7 +75,7 @@ router.get("/quiz/download", function(request, response) {
   }
 });
 
-app.use(express.static('quiz'));
+//app.use(express.static('quiz'));
 app.use(express.static('.'));
 app.use('/', router);
 
@@ -84,6 +84,7 @@ function checkUser(socket, o, joinQuiz) {
   if (o.userId == "") {
     o.userId = "anon" + (++userCounter);
     joinQuiz(socket, o, o.userId, o.userId);
+    // for testing purposes
   } else if (o.userId == "00000001") {
     joinQuiz(socket, o, o.userId, "Ante Antić");
   } else if (o.userId == "00000002") {
@@ -93,11 +94,11 @@ function checkUser(socket, o, joinQuiz) {
   } else if (o.userId == "00000004") {
     joinQuiz(socket, o, o.userId, "Ivo Ivić");
   } else {
+    // real authentication
     request({
         url: "https://api.mornar:da17dec2@www.fer.unizg.hr/_download/simplereport/report_109568_8626_.json?p1=" + o.userId
       },
       function(error, response, body) {
-        console.log(body);
         var resp = JSON.parse(body);
         if (resp.length > 0) {
           joinQuiz(socket, o, o.userId, resp[0].ime + " " + resp[0].prezime);
@@ -128,8 +129,9 @@ function joinQuiz(socket, o, userId, userName) {
       }
     };
   }
+  q.activeUserCount++;
   sendMessage(socket, "Joined quiz " + o.quizId + " as " + userName, "status");
-  sendCounter(lecturers[o.quizId], "userCount", q.userCount);
+  sendCounter(lecturers[o.quizId], "userCount", q.activeUserCount + "/" + q.userCount);
   lecturers[o.quizId].sendJSON({
     cmd: "User",
     userId: userId
@@ -139,13 +141,9 @@ function joinQuiz(socket, o, userId, userName) {
 function leaveQuiz(user) {
   var q = quizzes[user.quizId];
   if (q != null) {
-    --q.userCount;
+    --q.activeUserCount;
     delete q.users[user.userId];
-    lecturers[q.quizId].sendJSON({
-      cmd: "Count",
-      counter: "userCount",
-      value: q.userCount
-    });
+    sendCounter(lecturers[user.quizId], "userCount", q.activeUserCount + "/" + q.userCount);
     lecturers[q.quizId].sendJSON({
       cmd: "UserLeft",
       userId: user.userId
@@ -250,6 +248,7 @@ var webServer = app.listen(port, function() {
                 break;
               }
               q = quizzes[o.quizId];
+              q.activeUserCount = 0;
             }
             lecturers[q.quizId] = this;
             this.quizId = o.quizId;
@@ -261,7 +260,7 @@ var webServer = app.listen(port, function() {
             });
             sendAnswers(q);
             sendCounter(this, "question", q.question);
-            sendCounter(this, "userCount", q.userCount);
+            sendCounter(lecturers[o.quizId], "userCount", q.activeUserCount + "/" + q.userCount);
             sendCounter(this, "answerCount", q.answerCount[q.question]);
             q.active = false;
             q.questionStart = new Date();
@@ -353,6 +352,7 @@ var webServer = app.listen(port, function() {
               quizId: quizId,
               question: 1,
               users: {},
+              activeUserCount: 0,
               userCount: 0,
               answerCount: {},
               answers: {},
@@ -398,14 +398,18 @@ var webServer = app.listen(port, function() {
 
 
 fs.appendFile("log.txt", "Started");
-// function clean() {
-//   var t = new Date();
-//   for (var key in quizzes) {
-//     if (t - quizzes[key].quizStart > 24 * 3600 * 1000) {
-//       delete quizzes[key];
-//     }
-//   }
-// }
+
+// destroy all qizzes lingering form more than 24 hours
+function clean() {
+  var t = new Date();
+  for (var key in quizzes) {
+    if (t - quizzes[key].quizStart > 24 * 3600 * 1000) {
+      delete quizzes[key];
+    }
+  }
+}
+
+setInterval(clean, 3600000)
 
 // var ifaces = require("os").networkInterfaces();
 // console.log (ifaces);
