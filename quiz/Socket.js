@@ -3,6 +3,9 @@ var ws;
 window.onload = function() {
 
   var l = window.location.toString();
+  if (!l.includes(":8080")) {
+    l = l.replace ("/quiz", ":8080/quiz");
+  }
   ws = new WebSocket(l.replace("http://", "ws://"));
   document.getElementById("quizId").value = localStorage.getItem("quizId");
   document.getElementById("userId").value = localStorage.getItem("userId");

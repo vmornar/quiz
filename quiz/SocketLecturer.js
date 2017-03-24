@@ -50,6 +50,9 @@ function authenticate() {
 $(document).ready(function() {
 
   var l = window.location.toString();
+  if (!l.includes(":8080")) {
+    l = l.replace ("/quiz", ":8080/quiz");
+  }
   ws = new WebSocket(l.replace("http://", "ws://"));
 
   WebSocket.prototype.sendJSON = function(o) {

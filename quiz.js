@@ -15,6 +15,7 @@ const port = 8080;
 
 var wsServer;
 var userCounter = 0;
+var params;
 var quizzes = {};
 var lecturers = {}; // because of circular reference if in quizzes
 
@@ -75,7 +76,7 @@ router.get("/quiz/download", function(request, response) {
   }
 });
 
-//app.use(express.static('quiz'));
+app.use(express.static('quiz'));
 app.use(express.static('.'));
 app.use('/', router);
 
@@ -95,8 +96,9 @@ function checkUser(socket, o, joinQuiz) {
     joinQuiz(socket, o, o.userId, "Ivo Ivić");
   } else {
     // real authentication
+    // serviceUrl: "https://some.site/someService?id=" returns ime, prezime
     request({
-        url: "https://api.mornar:da17dec2@www.fer.unizg.hr/_download/simplereport/report_109568_8626_.json?p1=" + o.userId
+        url: params.serviceUrl + o.userId
       },
       function(error, response, body) {
         var resp = JSON.parse(body);
@@ -201,7 +203,7 @@ var webServer = app.listen(port, function() {
         var o = JSON.parse(message);
         switch (o.cmd) {
           case "Auth":
-            if (o.password == "12345678") {
+            if (o.password == params.lecturerPwd) {
               this.authenticated = true
               this.sendJSON({
                 cmd: "Auth"
@@ -399,7 +401,13 @@ var webServer = app.listen(port, function() {
 
 fs.appendFile("log.txt", "Started");
 
-// destroy all qizzes lingering form more than 24 hours
+// in params
+// { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
+data = fs.readFileSync ("params");
+params = JSON.parse (data.toString());
+console.log (params);
+
+// destroy all quizzes lingering for more than 24 hours
 function clean() {
   var t = new Date();
   for (var key in quizzes) {
@@ -413,3 +421,5 @@ setInterval(clean, 3600000)
 
 // var ifaces = require("os").networkInterfaces();
 // console.log (ifaces);
+
+

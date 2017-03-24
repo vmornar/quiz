@@ -12,24 +12,27 @@
 <body>
 
   <div id="login">
-    <input id="password" type="password" value="12345678"></input>
+    <input id="password" type="password" value="ferUčo"></input>
     <button onclick="authenticate()">Authenticate</button>
   </div>
 
   <div id="rest" hidden=true>
 
-    <button onclick="newQuiz()">New quiz</button>
-    <input id="quizId" class="counter" size=2></input>
-    <button onclick="joinQuiz()">Join</button>
-    <button onclick="clearQuiz()">Delete</button><br>
+    <button onclick="newQuiz()" title="Create and automatically join a new quiz">New quiz</button>
+    <input id="quizId" class="counter" size=2 title="Type an existing quiz id to retrieve from storage"></input>
+    <button onclick="joinQuiz()" title="Retrieve and join quiz with entered id">Join</button>
+    <button onclick="clearQuiz()" title="Delete quiz with entered id">Delete</button><br>
 
-    <button id="toggle" onclick="toggle()" class="active" hidden="true"></button> Users <span id="userCount" class="counter"></span>
-    <a id="download" href="" download="">Download</a><br> Question <span id="question" class="counter"></span>
-    <button onclick="prevQuestion()">Prev</button>
-    <button onclick="nextQuestion()">Next</button> Answers <span id="answerCount" class="counter"></span><br> Answer <input type="text" id="correctAnswer" size=1></input>
-    <button onclick="showAnswersUsers()">Users</button>
-    <button onclick="showAnswersText()">Answers</button>
-    <button onclick="showAnswersGraph()">Graph</button>
+    <button id="toggle" onclick="toggle()" class="active" hidden="true" title="Enable/disable answering to quiz"></button> 
+    Users <span id="userCount" class="counter" title="Connected users / Total users"></span>
+    <a id="download" href="" download="" title="Download results">Download</a><br> Question 
+    <button onclick="prevQuestion()" title="Go to previous question">Prev</button> <span id="question" class="counter" title="Current questions"></span>
+    <button onclick="nextQuestion()" title="Go to next question">Next</button>
+    Answers <span id="answerCount" class="counter" title="Number of answers to current question"></span><br>
+    Answer <input type="text" id="correctAnswer" size=1  title="Type correct answer to current question, just for displaying who answered correctly"></input>
+    <button onclick="showAnswersUsers()" title="Show ids, connection status (red+italic -> disconnected), answer status (blue background -> answered), correct/incorrect (if correct answer is enetered)">Users</button>
+    <button onclick="showAnswersText()"  title="Show answers">Answers</button>
+    <button onclick="showAnswersGraph()" title="Show bar chart">Graph</button>
     <span class="counter"></span>
 
     <div id="answers" style="margin: 10px 0 0 0">
