@@ -1,0 +1,32 @@
+body {
+	font-family: Consolas;
+	font-size: 18px;
+}
+
+button {
+	background-color: lightblue;
+	border: none;
+	font-size: 18px;
+	padding: 10px;
+	margin: 6px;
+	font-family: Consolas;
+	cursor: pointer
+}
+
+input {
+	font-size:18px
+}
+
+.error {
+	color: red;
+}
+
+.status {
+	color: green;
+}
+
+
+.answer {
+	width: 200px;
+}
+

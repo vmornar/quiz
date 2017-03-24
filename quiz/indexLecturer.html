@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Quiz</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script src="quiz/SocketLecturer.js"></script>
+  <link rel="stylesheet" type="text/css" href="quiz/cssLecturer.css">
+</head>
+
+<body>
+
+  <div id="login">
+    <input id="password" type="password" value="12345678"></input>
+    <button onclick="authenticate()">Authenticate</button>
+  </div>
+
+  <div id="rest" hidden=true>
+
+    <button onclick="newQuiz()">New quiz</button>
+    <input id="quizId" class="counter" size=2></input>
+    <button onclick="joinQuiz()">Join</button>
+    <button onclick="clearQuiz()">Delete</button><br>
+
+    <button id="toggle" onclick="toggle()" class="active" hidden="true"></button> Users <span id="userCount" class="counter"></span>
+    <a id="download" href="" download="">Download</a><br> Question <span id="question" class="counter"></span>
+    <button onclick="prevQuestion()">Prev</button>
+    <button onclick="nextQuestion()">Next</button> Answers <span id="answerCount" class="counter"></span><br> Answer <input type="text" id="correctAnswer" size=1></input>
+    <button onclick="showAnswersUsers()">Users</button>
+    <button onclick="showAnswersText()">Answers</button>
+    <button onclick="showAnswersGraph()">Graph</button>
+    <span class="counter"></span>
+
+    <div id="answers" style="margin: 10px 0 0 0">
+    </div>
+
+    <div id="chart" style="margin: 10px 0 0 0">
+      <canvas id="chartCanvas" width="300" height="300"></canvas>
+    </div>
+
+  </div>
+</body>
+
+</html>

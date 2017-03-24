@@ -1,0 +1,74 @@
+body {
+  font-family: Consolas;
+  font-size: 14px;
+}
+
+button {
+  background-color: lightblue;
+  border: none;
+  font-size: 14px;
+  margin: 1px;
+  font-family: Consolas;
+  cursor: pointer
+}
+
+a {
+  background-color: lightblue;
+  border: none;
+  font-size: 14px;
+  margin: 1px;
+  text-decoration: none;
+  color: black;
+  padding: 1px;
+  font-family: Consolas;
+}
+
+.error {
+  color: red;
+}
+
+.status {
+  color: green;
+}
+
+.answer {
+  width: 200px;
+}
+
+.active {
+  background-color: lightgreen
+}
+
+.inactive {
+  background-color: lightcoral
+}
+
+.user {
+  margin: 2px;
+  font-size: 14px
+}
+
+.userInactive {
+  color: red;
+  font-style: italic; 
+}
+
+.user::after {
+  content: "\00AD"
+}
+
+.counter {
+  font-size: 24px
+}
+
+.answered {
+  background-color: lightblue;
+}
+
+.correct {
+  background-color: lightgreen;
+}
+
+.incorrect {
+  background-color: lightcoral;
+}
