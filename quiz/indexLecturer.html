@@ -12,8 +12,8 @@
 <body>
 
   <div id="login">
-    <input id="password" type="password" value="ferUčo"></input>
-    <button onclick="authenticate()">Authenticate</button>
+    <input id="password" type="password" value="" onkeydown="if (event.keyCode == 13) $('#authbtn').click()" autofocus="autofocus"></input>
+    <button id="authbtn" onclick="authenticate()">Authenticate</button>
   </div>
 
   <div id="rest" hidden=true>
@@ -29,8 +29,8 @@
     <button onclick="prevQuestion()" title="Go to previous question">Prev</button> <span id="question" class="counter" title="Current questions"></span>
     <button onclick="nextQuestion()" title="Go to next question">Next</button>
     Answers <span id="answerCount" class="counter" title="Number of answers to current question"></span><br>
-    Answer <input type="text" id="correctAnswer" size=1  title="Type correct answer to current question, just for displaying who answered correctly"></input>
-    <button onclick="showAnswersUsers()" title="Show ids, connection status (red+italic -> disconnected), answer status (blue background -> answered), correct/incorrect (if correct answer is enetered)">Users</button>
+    Answer <input type="text" id="correctAnswer" size=1  title="Correct answer to current question, not stored, just for displaying who answered correctly"></input>
+    <button onclick="showAnswersUsers()" title="Show ids, connection status (red+italic -> disconnected), answer status (blue background -> answered), correct/incorrect (green/red, if correct answer is enetered)">Users</button>
     <button onclick="showAnswersText()"  title="Show answers">Answers</button>
     <button onclick="showAnswersGraph()" title="Show bar chart">Graph</button>
     <span class="counter"></span>

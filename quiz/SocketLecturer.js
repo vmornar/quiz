@@ -22,19 +22,15 @@ function showAnswers() {
 
 function addUser(userId) {
   if ($("#" + userId).length == 0) {
-    console.log("1", userId);
     $("#answers").append("<span id='" + userId + "' class='user'>" + userId + "</span>");
     $("#" + userId).data("active", true);
     $("#answers").children("span").each(function(idx, itm) {
-      console.log($(itm).attr("id"), userId);
       if ($(itm).attr("id") > userId) {
-        console.log("inserted before", userId);
         $("#" + userId).insertBefore(itm);
         return;
       }
     });
   } else {
-    console.log("2", userId);
     $("#" + userId).data("active", true)
     $("#" + userId).removeClass("userInactive");
   }
@@ -61,7 +57,6 @@ $(document).ready(function() {
 
   ws.onmessage = function(msg) {
     var o = JSON.parse(msg.data);
-    console.log(o.cmd);
     switch (o.cmd) {
       case "Auth":
         $("#rest").show();

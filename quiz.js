@@ -405,7 +405,7 @@ fs.appendFile("log.txt", "Started");
 // { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
 data = fs.readFileSync ("params");
 params = JSON.parse (data.toString());
-console.log (params);
+
 
 // destroy all quizzes lingering for more than 24 hours
 function clean() {
