@@ -344,11 +344,15 @@ var webServer = app.listen(port, function() {
 
           case "NewQuiz":
             if (!authenticated(this)) break;
+            if (this.quizId != null) {
+              saveQuiz (this.quizId);
+              delete quizzes[this.quizId];
+            }
             var quizId;
             do {
               quizId = Math.floor((Math.random() * 10000) + 1).toString();
               //quizId = 1111;
-            } while (quizzes[quizId] != null);
+            } while (quizzes[quizId] != null || fs.existsSync ("Storage/" + quizId + ".dat"));
 
             quizzes[quizId] = {
               quizId: quizId,
@@ -382,7 +386,7 @@ var webServer = app.listen(port, function() {
         }
       } catch (err) {
         fs.appendFile("log.txt", err.message, function() {});
-        sendMessage(this, err.message, "error");
+        sendMessage(this, err.message + "\r\n", "error");
       }
 
     });
@@ -399,26 +403,32 @@ var webServer = app.listen(port, function() {
 });
 
 
-fs.appendFile("log.txt", "Started");
-
-// in params
-// { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
-data = fs.readFileSync ("params");
-params = JSON.parse (data.toString());
-
-
 // destroy all quizzes lingering for more than 24 hours
 function clean() {
   var t = new Date();
   for (var key in quizzes) {
     if (t - quizzes[key].quizStart > 24 * 3600 * 1000) {
+      saveQuiz (key);
       delete quizzes[key];
     }
   }
 }
 
-setInterval(clean, 3600000)
 
+try {
+
+  fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n");
+  // in params
+  // { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
+  data = fs.readFileSync ("params");
+  params = JSON.parse (data.toString());
+
+
+  clean();
+  setInterval(clean, 3600000)
+} catch (err) {
+  fs.appendFile("log.txt", err.message + "\r\n", function() {});
+}
 // var ifaces = require("os").networkInterfaces();
 // console.log (ifaces);
 

@@ -2,6 +2,26 @@ var ws;
 var active = true;
 var mode = 1;
 var myChart;
+var seconds = 0;
+var timerId;
+
+function updateTime () {
+  $("#time").html (Math.floor(seconds/60) + ":" + seconds % 60)
+  seconds++;
+}
+
+function startTimer () {
+  seconds = 0;
+  if (timerId == null) {
+    updateTime();
+    timerId = setInterval (updateTime, 1000);
+  }
+}
+
+function stopTimer() {
+  clearInterval (timerId);
+  timerId = null;
+}
 
 function setMode(inMode) {
   mode = inMode;
@@ -135,18 +155,22 @@ function newQuiz() {
     cmd: "NewQuiz"
   });
   setMode(1);
+  startTimer();
 }
 
 function nextQuestion() {
   ws.sendJSON({
     cmd: "NextQuestion"
   });
+  startTimer();
 }
 
 function prevQuestion() {
   ws.sendJSON({
     cmd: "PrevQuestion"
   });
+  seconds = 0;
+  stopTimer();
 }
 
 function showAnswersUsers() {
@@ -192,12 +216,15 @@ function toggle(status) {
   $("#toggle").show();
   if (status != null) active = status;
   else active = !active;
+
   if (active) {
     $("#toggle")[0].className = 'active';
-    $("#toggle").html("Quiz active");
+    $("#toggle").html("Active");
+    startTimer();
   } else {
     $("#toggle")[0].className = 'inactive';
-    $("#toggle").html("Quiz inactive");
+    $("#toggle").html("Inactive");
+    stopTimer();
   }
   ws.sendJSON({
     cmd: "Active",
@@ -250,3 +277,4 @@ function showAnswersGraph() {
     }
   });
 }
+
