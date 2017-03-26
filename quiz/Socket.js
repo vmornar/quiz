@@ -1,24 +1,53 @@
-var ws;
+var ws = {};
+ws.connected = false;
+var l;
 
 window.onload = function() {
-
-  var l = window.location.toString();
+  l = window.location.toString();
   if (!l.includes(":8080")) {
-    l = l.replace ("/quiz", ":8080/quiz");
+    l = l.replace("/quiz", ":8080/quiz");
   }
-  ws = new WebSocket(l.replace("http://", "ws://"));
   document.getElementById("quizId").value = localStorage.getItem("quizId");
   document.getElementById("userId").value = localStorage.getItem("userId");
+  connect();
+};
 
+function displayMessage (msg, msgClass) {
+  document.getElementById("message").innerHTML = msg;
+  document.getElementById("message").className = msgClass;
+}
+
+function socketClosed() {
+  ws.connected = false;
+  displayMessage ("No connection, join again", "error");
+}
+
+function connect(callback) {
+  if (ws.connected) {
+    console.log (callback);
+    if (callback != null) callback();
+    return;
+  }
+  displayMessage ("Connecting...", "status");
+  ws = new WebSocket(l.replace("http://", "ws://"));
+  ws.onopen = function() {
+    ws.connected = true;
+    displayMessage ("Connected", "status");
+    if (callback != null) callback();
+  }
   ws.onmessage = function(msg) {
     var o = JSON.parse(msg.data);
     if (o.cmd == "Message") {
-      document.getElementById("message").innerHTML = o.message;
-      document.getElementById("message").className = o.class;
+      displayMessage (o.message, o.class);
     }
   }
-
-};
+  ws.onclose = function() {
+    socketClosed();
+  }
+  ws.onerror = function() {
+    socketClosed();
+  }
+}
 
 function sendAnswer(button) {
   ws.send(JSON.stringify({
@@ -35,20 +64,24 @@ function sendText() {
 }
 
 function join() {
-  ws.send(JSON.stringify({
-    cmd: "JoinQuiz",
-    quizId: document.getElementById("quizId").value.trim(),
-    userId: document.getElementById("userId").value.trim()
-  }));
+  connect(function() {
+    ws.send(JSON.stringify({
+      cmd: "JoinQuiz",
+      quizId: document.getElementById("quizId").value.trim(),
+      userId: document.getElementById("userId").value.trim()
+    }));
 
-  localStorage.setItem("quizId", document.getElementById("quizId").value);
-  localStorage.setItem("userId", document.getElementById("userId").value);
+    localStorage.setItem("quizId", document.getElementById("quizId").value);
+    localStorage.setItem("userId", document.getElementById("userId").value);
+  });
 }
 
 function joinAnon() {
-  ws.send(JSON.stringify({
-    cmd: "JoinQuiz",
-    quizId: document.getElementById("quizId").value.trim(),
-    userId: ""
-  }));
+  connect(function() {
+    ws.send(JSON.stringify({
+      cmd: "JoinQuiz",
+      quizId: document.getElementById("quizId").value.trim(),
+      userId: ""
+    }));
+  });
 }

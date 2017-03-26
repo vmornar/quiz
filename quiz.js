@@ -235,7 +235,7 @@ var webServer = app.listen(port, function() {
                     userId: this.userId,
                     answer: o.answer
                   });
-                  sendMessage(this, "Answer " + o.answer + " to question " + q.question + " recorded after " + time + " seconds", "status");
+                  sendMessage(this, "Answer " + o.answer + " to question " + q.question + ",  " + Math.floor(time) + " s", "status");
                 }
               }
             }
@@ -415,21 +415,21 @@ function clean() {
 }
 
 
-try {
+// try {
 
   fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n");
+  
   // in params
   // { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
   data = fs.readFileSync ("params");
   params = JSON.parse (data.toString());
 
-
   clean();
   setInterval(clean, 3600000)
-} catch (err) {
-  fs.appendFile("log.txt", err.message + "\r\n", function() {});
-}
-// var ifaces = require("os").networkInterfaces();
-// console.log (ifaces);
+// } catch (err) {
+//   console.log (err.message);
+//   fs.appendFile("log.txt", err.message + "\r\n", function() {});
+// }
+
 
 
