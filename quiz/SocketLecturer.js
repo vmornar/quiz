@@ -1,25 +1,29 @@
-var ws;
 var active = true;
 var mode = 1;
 var myChart;
 var seconds = 0;
 var timerId;
 
-function updateTime () {
-  $("#time").html (Math.floor(seconds/60) + ":" + seconds % 60)
+function pad(n, size) {
+  var s = "000000000" + n;
+  return s.substr(s.length - size);
+}
+
+function updateTime() {
+  $("#time").html(Math.floor(seconds / 60) + ":" + pad (seconds % 60, 2));
   seconds++;
 }
 
-function startTimer () {
+function startTimer() {
   seconds = 0;
   if (timerId == null) {
     updateTime();
-    timerId = setInterval (updateTime, 1000);
+    timerId = setInterval(updateTime, 1000);
   }
 }
 
 function stopTimer() {
-  clearInterval (timerId);
+  clearInterval(timerId);
   timerId = null;
 }
 
@@ -57,85 +61,80 @@ function addUser(userId) {
 }
 
 function authenticate() {
+  clearMessage();
   ws.sendJSON({
     cmd: "Auth",
     password: $("#password").val()
   })
 }
 
+function onMessage(msg) {
+  var o = JSON.parse(msg.data);
+  switch (o.cmd) {
+    case "Auth":
+      $("#rest").show();
+      $("#login").hide();
+      $("#quizId").focus();
+      break;
+    case "QuizId":
+      $("#quizId").val(o.value);
+      $("#download").attr("download", o.value + ".txt");
+      $("#download").attr("href", "/download?quizId=" + o.value);
+      break;
+    case "OldQuizId":
+      $("#download").attr("download", o.value + ".txt");
+      $("#download").attr("href", "/download?quizId=" + o.value);
+      $("answers").html("");
+      for (var userId in o.users) {
+        addUser(userId);
+        $("#" + userId).data("active", false);
+        //$("#" + userId).addClass ("userInactive");
+      }
+      break;
+    case "Count":
+      $("#" + o.counter).html(o.value);
+      break;
+    case "Answer":
+      $("#" + o.userId).data("answer", o.answer);
+      $("#" + o.userId)[0].className = "user answered";
+      if (mode == 3) showAnswersGraph();
+      if (mode == 2) $("#" + o.userId).html(o.answer);
+      break;
+    case "Message":
+      displayMessage(o.message, o.class);
+      break;
+    case "UserLeft":
+      $("#" + o.userId).data("active", false);
+      $("#" + o.userId).addClass("userInactive");
+      break;
+    case "User":
+      addUser(o.userId);
+      break;
+    case "Answers":
+      $("#answers").children("span").each(function(idx, itm) {
+        $(itm).data("answer", "");
+      });
+      for (var key in o.answers) {
+        $("#" + key).data("answer", o.answers[key].answer);
+      }
+      showAnswers();
+      break;
+    case "Active":
+      toggle(o.active);
+      break;
+  }
+}
+
 $(document).ready(function() {
-
-  var l = window.location.toString();
-  if (!l.includes(":8080")) {
-    l = l.replace ("/quiz", ":8080/quiz");
-  }
-  ws = new WebSocket(l.replace("http://", "ws://"));
-
-  WebSocket.prototype.sendJSON = function(o) {
-    this.send(JSON.stringify(o));
-  }
-
-  ws.onmessage = function(msg) {
-    var o = JSON.parse(msg.data);
-    switch (o.cmd) {
-      case "Auth":
-        $("#rest").show();
-        $("#login").hide();
-        break;
-      case "QuizId":
-        $("#quizId").val(o.value);
-        $("#download").attr("download", o.value + ".txt");
-        $("#download").attr("href", "/download?quizId=" + o.value);
-        break;
-      case "OldQuizId":
-        $("#download").attr("download", o.value + ".txt");
-        $("#download").attr("href", "/download?quizId=" + o.value);
-        $("answers").html("");
-        for (var userId in o.users) {
-          addUser(userId);
-          $("#" + userId).data("active", false);
-          //$("#" + userId).addClass ("userInactive");
-        }
-        break;
-      case "Count":
-        $("#" + o.counter).html(o.value);
-        break;
-      case "Answer":
-        $("#" + o.userId).data("answer", o.answer);
-        $("#" + o.userId)[0].className = "user answered";
-        if (mode == 3) showAnswersGraph();
-        if (mode == 2) $("#" + o.userId).html(o.answer);
-        break;
-      case "Message":
-        alert(o.message);
-        break;
-      case "UserLeft":
-        $("#" + o.userId).data("active", false);
-        $("#" + o.userId).addClass("userInactive");
-        break;
-      case "User":
-        addUser(o.userId);
-        break;
-      case "Answers":
-        $("#answers").children("span").each(function(idx, itm) {
-          $(itm).data("answer", "");
-        });
-        for (var key in o.answers) {
-          $("#" + key).data("answer", o.answers[key].answer);
-        }
-        showAnswers();
-        break;
-      case "Active":
-        toggle(o.active);
-        break;
-    }
-  }
+  connect();
 });
 
 function joinQuiz() {
-  ws.sendJSON({
-    cmd: "JoinQuizAsLecturer",
-    quizId: $("#quizId").val()
+  connect(function() {
+    ws.sendJSON({
+      cmd: "JoinQuizAsLecturer",
+      quizId: $("#quizId").val()
+    });
   });
 }
 
@@ -148,14 +147,16 @@ function clearQuiz() {
 }
 
 function newQuiz() {
-  $("#userCount").html("0");
-  $("#answerCount").html("0");
-  $("#answers").html("");
-  ws.sendJSON({
-    cmd: "NewQuiz"
+  connect(function() {
+    $("#userCount").html("0");
+    $("#answerCount").html("0");
+    $("#answers").html("");
+    ws.sendJSON({
+      cmd: "NewQuiz"
+    });
+    setMode(1);
+    startTimer();
   });
-  setMode(1);
-  startTimer();
 }
 
 function nextQuestion() {
@@ -277,4 +278,3 @@ function showAnswersGraph() {
     }
   });
 }
-

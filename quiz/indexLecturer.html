@@ -6,6 +6,7 @@
   <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+  <script src="quiz/Common.js"></script>
   <script src="quiz/SocketLecturer.js"></script>
   <link rel="stylesheet" type="text/css" href="quiz/cssLecturer.css">
 </head>
@@ -20,30 +21,29 @@
   <div id="rest" hidden=true>
 
     <button onclick="newQuiz()" title="Create and automatically join a new quiz">New quiz</button>
-    <input id="quizId" class="counter" size=2 title="Type an existing quiz id to retrieve from storage"></input>
-    <button onclick="joinQuiz()" title="Retrieve and join quiz with entered id">Join</button>
+    <input id="quizId" class="counter" size=2 title="Type an existing quiz id to retrieve from storage" onkeydown="if (event.keyCode == 13) $('#joinbtn').click()"></input>
+    <button id="joinbtn" onclick="joinQuiz()" title="Retrieve and join quiz with entered id">Join</button>
     <button onclick="clearQuiz()" title="Delete quiz with entered id">Delete</button><br>
 
-    <button id="toggle" onclick="toggle()" class="active" hidden="true" title="Enable/disable answering to quiz"></button> 
-    Users <span id="userCount" class="counter" title="Connected users / Total users"></span>
-    <a id="download" href="" download="" title="Download results">Download</a> <span id="time" class="counter"></span><br> Question 
+    <button id="toggle" onclick="toggle()" class="active" hidden="true" title="Enable/disable answering to quiz"></button> Users <span id="userCount" class="counter" title="Connected users / Total users"></span>
+    <a id="download" href="" download="" title="Download results">Download</a> <span id="time" class="counter"></span><br> Question
     <button onclick="prevQuestion()" title="Go to previous question">Prev</button> <span id="question" class="counter" title="Current question"></span>
-    <button onclick="nextQuestion()" title="Go to next question">Next</button>
-    Answers <span id="answerCount" class="counter" title="Number of answers to current question"></span><br>
-    Answer <input type="text" id="correctAnswer" size=1  title="Correct answer to current question, not stored, just for displaying who answered correctly"></input>
+    <button onclick="nextQuestion()" title="Go to next question">Next</button> Answers <span id="answerCount" class="counter" title="Number of answers to current question"></span><br> Answer <input type="text" id="correctAnswer" size=1 title="Correct answer to current question, not stored, just for displaying who answered correctly"></input>
     <button onclick="showAnswersUsers()" title="Show ids, connection status (red+italic -> disconnected), answer status (blue background -> answered), correct/incorrect (green/red, if correct answer is enetered)">Users</button>
-    <button onclick="showAnswersText()"  title="Show answers">Answers</button>
+    <button onclick="showAnswersText()" title="Show answers">Answers</button>
     <button onclick="showAnswersGraph()" title="Show bar chart">Graph</button>
     <span class="counter"></span>
-
-    <div id="answers" style="margin: 10px 0 0 0">
-    </div>
-
-    <div id="chart" style="margin: 10px 0 0 0">
-      <canvas id="chartCanvas" width="300" height="300"></canvas>
-    </div>
-
   </div>
+
+  <span id="message"></span><br>
+
+  <div id="answers" style="margin: 10px 0 0 0">
+  </div>
+
+  <div id="chart" style="margin: 10px 0 0 0">
+    <canvas id="chartCanvas" width="300" height="300"></canvas>
+  </div>
+
 </body>
 
 </html>

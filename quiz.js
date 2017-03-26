@@ -144,7 +144,7 @@ function leaveQuiz(user) {
   var q = quizzes[user.quizId];
   if (q != null) {
     --q.activeUserCount;
-    delete q.users[user.userId];
+    //delete q.users[user.userId];
     sendCounter(lecturers[user.quizId], "userCount", q.activeUserCount + "/" + q.userCount);
     lecturers[q.quizId].sendJSON({
       cmd: "UserLeft",
@@ -288,6 +288,7 @@ var webServer = app.listen(port, function() {
             q = quizzes[this.quizId];
             if (q != null) {
               q.active = o.active;
+              q.questionStart = new Date();
             }
             break;
 
