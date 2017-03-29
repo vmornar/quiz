@@ -54,11 +54,8 @@ function connect(callback) {
 
   ws.onmessage = onMessage;
 
-  ws.onclose = function() {
-    socketClosed();
-  }
+  ws.onclose = socketClosed;
 
-  ws.onerror = function() {
-    socketClosed();
-  }
+  ws.onerror = socketClosed;
+
 }

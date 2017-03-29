@@ -79,11 +79,11 @@ function onMessage(msg) {
     case "QuizId":
       $("#quizId").val(o.value);
       $("#download").attr("download", o.value + ".txt");
-      $("#download").attr("href", "/download?quizId=" + o.value);
+      $("#download").attr("href", "/quiz/download?quizId=" + o.value);
       break;
     case "OldQuizId":
       $("#download").attr("download", o.value + ".txt");
-      $("#download").attr("href", "/download?quizId=" + o.value);
+      $("#download").attr("href", "/quiz/download?quizId=" + o.value);
       $("answers").html("");
       for (var userId in o.users) {
         addUser(userId);
