@@ -39,14 +39,9 @@ function connect(callback) {
   displayMessage("Connecting...", "status");
 
   var l = window.location.toString();
-<<<<<<< HEAD
-  if (l.indexOf(":8080") < 0) {
-    l = l.replace("/quiz", ":8080/quiz");
-=======
 
   if (l.indexOf(":8080") < 0) {
-    l = l.replace("/quiz", ":8080");
->>>>>>> 9b46105cef78dccc502e707fcce461377c401c68
+    l = l.replace("/quiz", ":8080/quiz");
   }
 
   ws = new WebSocket(l.replace("http://", "ws://"));
