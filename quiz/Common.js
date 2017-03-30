@@ -39,7 +39,7 @@ function connect(callback) {
   displayMessage("Connecting...", "status");
 
   var l = window.location.toString();
-  if (!l.includes(":8080")) {
+  if (l.indexOf(":8080") < 0) {
     l = l.replace("/quiz", ":8080/quiz");
   }
 
