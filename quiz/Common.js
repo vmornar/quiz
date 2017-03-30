@@ -39,8 +39,14 @@ function connect(callback) {
   displayMessage("Connecting...", "status");
 
   var l = window.location.toString();
+<<<<<<< HEAD
   if (l.indexOf(":8080") < 0) {
     l = l.replace("/quiz", ":8080/quiz");
+=======
+
+  if (l.indexOf(":8080") < 0) {
+    l = l.replace("/quiz", ":8080");
+>>>>>>> 9b46105cef78dccc502e707fcce461377c401c68
   }
 
   ws = new WebSocket(l.replace("http://", "ws://"));
@@ -54,11 +60,8 @@ function connect(callback) {
 
   ws.onmessage = onMessage;
 
-  ws.onclose = function() {
-    socketClosed();
-  }
+  ws.onclose = socketClosed;
 
-  ws.onerror = function() {
-    socketClosed();
-  }
+  ws.onerror = socketClosed;
+
 }
