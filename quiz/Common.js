@@ -40,8 +40,8 @@ function connect(callback) {
 
   var l = window.location.toString();
 
-  if (!l.indexOf(":8080") < 0) {
-    l = l.replace("/quiz", ":8080/quiz");
+  if (l.indexOf(":8080") < 0) {
+    l = l.replace("/quiz", ":8080");
   }
 
   ws = new WebSocket(l.replace("http://", "ws://"));
