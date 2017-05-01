@@ -185,6 +185,13 @@ function authenticated(socket) {
   return false;
 }
 
+function broadcast(data) {
+	data = JSON.stringify(data);
+	wsServer.clients.forEach(function each(client) {
+		client.send(data);
+	});
+}
+
 var webServer = app.listen(port, function() {
 
   wsServer = new ws.Server({
@@ -202,6 +209,9 @@ var webServer = app.listen(port, function() {
         var q;
         var o = JSON.parse(message);
         switch (o.cmd) {
+          case "Temperature":
+            broadcast (o);
+            break;
           case "Auth":
             if (o.password == params.lecturerPwd) {
               this.authenticated = true
@@ -212,6 +222,8 @@ var webServer = app.listen(port, function() {
               sendMessage(this, "Invalid password", "error");
               this.authenticated = false;
             }
+            break;
+
           case "Answer":
             if (this.quizId != null) {
               let q = quizzes[this.quizId];

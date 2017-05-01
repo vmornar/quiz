@@ -3,6 +3,9 @@ function onMessage(msg) {
   if (o.cmd == "Message") {
     displayMessage(o.message, o.class);
     if (o.message.startsWith ("Joined")) ws.joined = true;
+  } else if (o.cmd == "Temperature") {
+    document.getElementById("temperature").innerHTML = "t = " + Math.round(o.value*10)/10;
+    document.getElementById("temperature").className = "status";
   }
 }
 
