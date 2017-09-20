@@ -39,8 +39,7 @@ function setMode(inMode) {
 }
 
 function showAnswers() {
-  if (mode == 1) showAnswersUsers()
-  else if (mode == 2) showAnswersText()
+  if (mode < 3) showAnswersList(mode)
   else showAnswersGraph()
 }
 
@@ -97,7 +96,7 @@ function onMessage(msg) {
     case "Answer":
       $("#" + o.userId).data("answer", o.answer);
       $("#" + o.userId)[0].className = "user answered";
-      if (mode == 3) showAnswersGraph();
+      //if (mode == 3) showAnswersGraph();
       if (mode == 2) $("#" + o.userId).html(o.answer);
       break;
     case "Message":
@@ -130,6 +129,8 @@ $(document).ready(function() {
 });
 
 function joinQuiz() {
+  $("#time").html("");
+  $("#answers").html("");
   connect(function() {
     ws.sendJSON({
       cmd: "JoinQuizAsLecturer",
@@ -174,10 +175,14 @@ function prevQuestion() {
   stopTimer();
 }
 
-function showAnswersUsers() {
+function showAnswersList(inMode) {
   var correctAnswer = $("#correctAnswer").val().toUpperCase();
   $("#answers").children("span").each(function(idx, itm) {
-    $(itm).html($(itm).attr("id"));
+    if (inMode == 1) {
+      $(itm).html($(itm).attr("id"));
+    } else {
+      $(itm).html($(itm).data("answer"));     
+    }
     if (correctAnswer > "") {
       if ($(itm).data("answer") > "") {
         if ($(itm).data("answer") == correctAnswer) {
@@ -185,6 +190,8 @@ function showAnswersUsers() {
         } else {
           $(itm)[0].className = "user incorrect";
         }
+      } else {
+        $(itm)[0].className = "user";
       }
     } else {
       if ($(itm).data("answer") > "") {
@@ -197,20 +204,7 @@ function showAnswersUsers() {
       $(itm).addClass("userInactive");
     }
   });
-  setMode(1);
-}
-
-function showAnswersText() {
-  mode = 2;
-  $("#answers").children("span").each(function(idx, itm) {
-    $(itm)[0].className = "user answered";
-    if ($(itm).data("answer") > "") {
-      $(itm).html($(itm).data("answer"));
-    } else {
-      $(itm).html("");
-    }
-  });
-  setMode(2);
+  setMode(inMode);
 }
 
 function toggle(status) {

@@ -39,7 +39,7 @@ function loadQuiz(quizId) {
 function closeQuiz(socket) {
   if (socket.quizId != null) {
     if (socket.lecturer) {
-      delete quizzes[socket.quizId];
+      //delete quizzes[socket.quizId];
     } else {
       leaveQuiz(socket);
     }
@@ -83,7 +83,11 @@ app.use('/', router);
 function checkUser(socket, o, joinQuiz) {
   // "0036377354"
   if (o.userId == "") {
-    o.userId = "anon" + (++userCounter);
+    if (socket.userId > "" && socket.userId.startsWith ("anon")) {
+      o.userId = socket.userId;
+    } else {
+      o.userId = "anon" + (++userCounter);
+    }
     joinQuiz(socket, o, o.userId, o.userId);
     // for testing purposes
   } else if (o.userId == "00000001") {
@@ -151,7 +155,7 @@ function leaveQuiz(user) {
       userId: user.userId
     });
     user.quizId = null;
-    user.userId = null;
+    //user.userId = null;
   }
 }
 
@@ -209,9 +213,7 @@ var webServer = app.listen(port, function() {
         var q;
         var o = JSON.parse(message);
         switch (o.cmd) {
-          case "Temperature":
-            broadcast (o);
-            break;
+          
           case "Auth":
             if (o.password == params.lecturerPwd) {
               this.authenticated = true
@@ -247,7 +249,7 @@ var webServer = app.listen(port, function() {
                     userId: this.userId,
                     answer: o.answer
                   });
-                  sendMessage(this, "Answer " + o.answer + " to question " + q.question + ",  " + Math.floor(time) + " s", "status");
+                  sendMessage(this, "Answer " + o.answer + " to question " + q.question + " in  " + Math.round(time) + " s", "status");
                 }
               }
             }
@@ -259,6 +261,13 @@ var webServer = app.listen(port, function() {
             if (q == null) {
               if (!loadQuiz(o.quizId)) {
                 sendMessage(this, "Quiz unavailable", "error");
+                sendCounter(this, "question", 0);
+                sendCounter(this, "userCount", "0/0");
+                sendCounter(this, "answerCount", "0");
+                this.sendJSON({
+                  cmd: "Active",
+                  active: false
+                });
                 break;
               }
               q = quizzes[o.quizId];
@@ -282,6 +291,7 @@ var webServer = app.listen(port, function() {
               cmd: "Active",
               active: q.active
             });
+            sendMessage(this, "Quiz joined", "status");
             break;
 
           case "JoinQuiz":
@@ -395,7 +405,13 @@ var webServer = app.listen(port, function() {
               cmd: "Active",
               active: q.active
             });
+            sendMessage (this, "Quiz created", "status");
             break;
+
+          case "Temperature":
+            broadcast (o);
+            break;
+
         }
       } catch (err) {
         fs.appendFile("log.txt", err.message, function() {});
