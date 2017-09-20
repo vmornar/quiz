@@ -183,7 +183,7 @@ function sendMessage(socket, message, cssClass) {
 }
 
 function authenticated(socket) {
-  return true;
+  //return true;
   if (socket.authenticated) return true;
   sendMessage(socket, "Not authenticated", "error");
   return false;
