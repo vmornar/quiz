@@ -1,5 +1,6 @@
 var ws = {};
 
+
 ws.connected = false;
 ws.joined = false;
 
