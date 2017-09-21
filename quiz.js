@@ -83,7 +83,7 @@ app.use('/', router);
 function checkUser(socket, o, joinQuiz) {
   // "0036377354"
   if (o.userId == "") {
-    if (socket.userId > "" && socket.userId.startsWith ("anon")) {
+    if (socket.userId > "" && socket.userId.startsWith("anon")) {
       o.userId = socket.userId;
     } else {
       o.userId = "anon" + (++userCounter);
@@ -183,17 +183,17 @@ function sendMessage(socket, message, cssClass) {
 }
 
 function authenticated(socket) {
-  //return true; ?!?!
+  //return true; ?!
   if (socket.authenticated) return true;
   sendMessage(socket, "Not authenticated", "error");
   return false;
 }
 
 function broadcast(data) {
-	data = JSON.stringify(data);
-	wsServer.clients.forEach(function each(client) {
-		client.send(data);
-	});
+  data = JSON.stringify(data);
+  wsServer.clients.forEach(function each(client) {
+    client.send(data);
+  });
 }
 
 var webServer = app.listen(port, function() {
@@ -213,7 +213,7 @@ var webServer = app.listen(port, function() {
         var q;
         var o = JSON.parse(message);
         switch (o.cmd) {
-          
+
           case "Auth":
             if (o.password == params.lecturerPwd) {
               this.authenticated = true
@@ -368,14 +368,14 @@ var webServer = app.listen(port, function() {
           case "NewQuiz":
             if (!authenticated(this)) break;
             if (this.quizId != null) {
-              saveQuiz (this.quizId);
+              saveQuiz(this.quizId);
               delete quizzes[this.quizId];
             }
             var quizId;
             do {
               quizId = Math.floor((Math.random() * 10000) + 1).toString();
               //quizId = 1111;
-            } while (quizzes[quizId] != null || fs.existsSync ("Storage/" + quizId + ".dat"));
+            } while (quizzes[quizId] != null || fs.existsSync("Storage/" + quizId + ".dat"));
 
             quizzes[quizId] = {
               quizId: quizId,
@@ -405,11 +405,11 @@ var webServer = app.listen(port, function() {
               cmd: "Active",
               active: q.active
             });
-            sendMessage (this, "Quiz created", "status");
+            sendMessage(this, "Quiz created", "status");
             break;
 
           case "Temperature":
-            broadcast (o);
+            broadcast(o);
             break;
 
         }
@@ -437,7 +437,7 @@ function clean() {
   var t = new Date();
   for (var key in quizzes) {
     if (t - quizzes[key].quizStart > 24 * 3600 * 1000) {
-      saveQuiz (key);
+      saveQuiz(key);
       delete quizzes[key];
     }
   }
@@ -446,19 +446,16 @@ function clean() {
 
 // try {
 
-  fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n");
-  
-  // in params
-  // { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
-  data = fs.readFileSync ("params");
-  params = JSON.parse (data.toString());
+fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n");
 
-  clean();
-  setInterval(clean, 3600000)
+// in params
+// { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }
+data = fs.readFileSync("params");
+params = JSON.parse(data.toString());
+
+clean();
+setInterval(clean, 3600000)
 // } catch (err) {
 //   console.log (err.message);
 //   fs.appendFile("log.txt", err.message + "\r\n", function() {});
 // }
-
-
-
