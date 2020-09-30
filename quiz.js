@@ -19,6 +19,9 @@ var params;
 var quizzes = {};
 var lecturers = {}; // because of circular reference if in quizzes
 
+let popis = fs.readFileSync('popis.json');
+popis = JSON.parse(popis);
+
 function saveQuiz(quizId) {
   var s = JSON.stringify(quizzes[quizId]);
   fs.writeFile("Storage/" + quizId + ".dat", s, function(err) {
@@ -101,6 +104,11 @@ function checkUser(socket, o, joinQuiz) {
   } else {
     // real authentication
     // serviceUrl: "https://some.site/someService?id=" returns ime, prezime
+    let st = popis.List1.find(x => x.B == o.userId);
+    if (st != null) {
+      joinQuiz(socket, o, o.userId, st.D + " " + st.C );
+      return;
+    }
     request({
         url: params.serviceUrl + o.userId
       },
@@ -445,7 +453,7 @@ function clean() {
 
 // try {
 
-fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n");
+fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n", function() {});
 
 // in params
 // { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }

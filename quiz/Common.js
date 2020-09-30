@@ -31,32 +31,41 @@ function socketClosed() {
 
 function connect(callback) {
 
-  if (ws.connected) {
-    if (callback != null) callback();
+  try {
+    msg = ""
+    if (ws.connected) {
+      if (callback != null) callback();
+      return;
+    }
+    msg = msg + " 1";
+    displayMessage("Connecting...", "status");
+    msg = msg + " 2";
+    var l = window.location.toString();
+    msg = msg + " 3";
+     if (l.indexOf(":8080") < 0) {
+       l = l.replace("/quiz", ":8080/quiz");
+     }
+    msg = msg + " 4";
+	let address = l.replace("https://", "wss://");
+	address = address.replace("http://", "ws://");
+    ws = new WebSocket(address);
+    msg = msg + " 5";
+    ws.onopen = function() {
+      ws.connected = true;
+      ws.joined = false;
+      displayMessage("Connected", "status");
+      if (callback != null) callback();
+    }
+
+    ws.onmessage = onMessage;
+
+    ws.onclose = socketClosed;
+
+    ws.onerror = socketClosed;
+
     return;
+
+  } catch(e) {
+    alert (e.message + " " + msg);
   }
-
-  displayMessage("Connecting...", "status");
-
-  var l = window.location.toString();
-
-  if (l.indexOf(":8080") < 0) {
-    l = l.replace("/quiz", ":8080/quiz");
-  }
-
-  ws = new WebSocket(l.replace("http://", "ws://"));
-
-  ws.onopen = function() {
-    ws.connected = true;
-    ws.joined = false;
-    displayMessage("Connected", "status");
-    if (callback != null) callback();
-  }
-
-  ws.onmessage = onMessage;
-
-  ws.onclose = socketClosed;
-
-  ws.onerror = socketClosed;
-
 }

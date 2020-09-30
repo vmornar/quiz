@@ -1,0 +1,199 @@
+{
+  "List1": [
+    {
+      "B": "JMBAG",
+      "C": "PREZIME",
+      "D": "IME",
+      "E": "MAIL ADRESA"
+    },
+    {
+      "A": "1.",
+      "B": "7606000121",
+      "C": "Bakalov",
+      "D": "Zoe Bozhidarova",
+      "E": "zoe.bozhidarova.bakalov@racunarstvo.hr"
+    },
+    {
+      "A": "2.",
+      "B": "0246099065",
+      "C": "Bilkić",
+      "D": "Marin",
+      "E": "marin.bilkic@racunarstvo.hr"
+    },
+    {
+      "A": "3.",
+      "B": "7606000088",
+      "C": "Bočkal",
+      "D": "Jan",
+      "E": "jan.bockal@racunarstvo.hr"
+    },
+    {
+      "A": "4.",
+      "B": "0035232324",
+      "C": "Dragoja",
+      "D": "Eva",
+      "E": "eva.dragoja@racunarstvo.hr"
+    },
+    {
+      "A": "5.",
+      "B": "0035203722",
+      "C": "Đukić",
+      "D": "Milica",
+      "E": "milica.dukic@racunarstvo.hr"
+    },
+    {
+      "A": "6.",
+      "B": "7606000142",
+      "C": "Faber",
+      "D": "Lea",
+      "E": "lea.faber@racunarstvo.hr"
+    },
+    {
+      "A": "7.",
+      "B": "7606000163",
+      "C": "Gojšić",
+      "D": "Jelena",
+      "E": "jelena.gojsic@racunarstvo.hr"
+    },
+    {
+      "A": "8.",
+      "B": 7606000184,
+      "C": "Graze Saborio",
+      "D": "Cyril",
+      "E": "cyril.grazesaborio@racunarstvo.hr"
+    },
+    {
+      "A": "9.",
+      "C": "Jelinčić",
+      "D": "Petra",
+      "E": "petra.jelincic@racunarstvo.hr"
+    },
+    {
+      "A": "10.",
+      "B": "7606000046",
+      "C": "Jovanović",
+      "D": "Stjepan",
+      "E": "stjepan.jovanovic@racunarstvo.hr"
+    },
+    {
+      "A": "11.",
+      "C": "Kajmak",
+      "D": "Bartul",
+      "E": "bartul.kajmak@racunarstvo.hr"
+    },
+    {
+      "A": "12.",
+      "B": 7606000179,
+      "C": "Karataştan",
+      "D": "Serkan",
+      "E": "serkan.karatastan@racunarstvo.hr"
+    },
+    {
+      "A": "13.",
+      "B": "7606000051",
+      "C": "Kosanović",
+      "D": "Andro",
+      "E": "andro.kosanovic@racunarstvo.hr"
+    },
+    {
+      "A": "14.",
+      "B": "0246063553",
+      "C": "Kozumplik",
+      "D": "Jan",
+      "E": "jan.kozumplik@racunarstvo.hr"
+    },
+    {
+      "A": "15.",
+      "B": "7606000116",
+      "C": "Kožnjak",
+      "D": "Matej",
+      "E": "matej.koznjak@racunarstvo.hr"
+    },
+    {
+      "A": "16.",
+      "B": "7606000025",
+      "C": "Kraljević",
+      "D": "Branimir",
+      "E": "kraljevic.branimir@racunarstvo.hr"
+    },
+    {
+      "A": "17.",
+      "B": "7606000093",
+      "C": "Maršić",
+      "D": "Roko",
+      "E": "roko.marsic@racunarstvo.hr"
+    },
+    {
+      "A": "18.",
+      "B": "7606000030",
+      "C": "Miholić",
+      "D": "Lukas",
+      "E": "lukas.miholic@racunarstvo.hr"
+    },
+    {
+      "A": "19.",
+      "C": "Nevins III",
+      "D": "Larry Daniel",
+      "E": "larrydaniel.nevins@racunarstvo.hr"
+    },
+    {
+      "A": "20.",
+      "B": "7606000100",
+      "C": "Orsag",
+      "D": "Mihael",
+      "E": "orsag.mihael@racunarstvo.hr"
+    },
+    {
+      "A": "21.",
+      "B": "7606000137",
+      "C": "Ribić",
+      "D": "Patrik",
+      "E": "patrik.ribic@racunarstvo.hr"
+    },
+    {
+      "A": "22.",
+      "B": 7606000158,
+      "C": "Song",
+      "D": "Hanzhou",
+      "E": "hanzhou.song@racunarstvo.hr"
+    },
+    {
+      "A": "23.",
+      "B": "7606000067",
+      "C": "Stare",
+      "D": "Iris",
+      "E": "iris.stare2@racunarstvo.hr"
+    },
+    {
+      "A": "24.",
+      "B": "7606000072",
+      "C": "Vuković",
+      "D": "Patrik",
+      "E": "vukovic.patrik@racunarstvo.hr"
+    },
+    {
+      "B": "0036536368",
+      "C": "Kadnikov",
+      "D": "Artur",
+      "E": "artur.kadnikov@fer.hr"
+    },
+    {
+      "B": "0036536513",
+      "C": "Poullalié",
+      "D": "Mathieu",
+      "E": "mathieu.poullalie@fer.hr"
+    },
+    {
+      "B": "0036536529",
+      "C": "Salfati",
+      "D": "Louis Léon Joseph",
+      "E": "louis.salfati@fer.hr"
+    },
+    {
+      "B": "0036536625",
+      "C": "Astolphi Farcic",
+      "D": "Victor",
+      "E": "farcic.victor-astolphi@fer.hr"
+    }
+  ]
+}
