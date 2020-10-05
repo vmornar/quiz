@@ -3,23 +3,29 @@
 
 <head>
   <title>Quiz</title>
-  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+  <meta name="viewport"
+    content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
   <script src="quiz/Common.js"></script>
   <script src="quiz/Socket.js"></script>
   <link rel="stylesheet" type="text/css" href="quiz/css.css">
 </head>
 
 <body>
-  Quiz </span> <input type="text" id="quizId" size="4" placeholder="0000"></input> <button onclick="joinAnon()">Join anonymously</button> <br>
-  Join as <input type="text" id="userId" size="12" placeholder="0036000000"></input> <button onclick="join()">Join</button><br>
-  
+  Quiz </span> <input type="text" id="quizId" size="4" placeholder="0000"></input> <button onclick="joinAnon()">Join
+    anonymously</button> <br>
+  Join as <input type="text" id="userId" size="12" placeholder="0036000000"></input> <button
+    onclick="join()">Join</button><br>
+
   <span id="message"></span> <span id="temperature"></span><br>
   <button onclick="sendAnswer(this)" class="answer">A</button><br>
   <button onclick="sendAnswer(this)" class="answer">B</button><br>
   <button onclick="sendAnswer(this)" class="answer">C</button><br>
   <button onclick="sendAnswer(this)" class="answer">D</button><br>
   <button onclick="sendAnswer(this)" class="answer">E</button><br>
-  <input type="text" id="textToSend" size="18" placeholder="Text"></input> <button onclick="sendText()">Send text</button>
+  <button onclick="sendAnswer(this)" class="answer">F</button><br>
+  <button onclick="sendAnswer(this)" class="answer">G</button><br>
+  <input type="text" id="textToSend" size="18" placeholder="Text"></input> <button onclick="sendText()">Send
+    text</button>
 </body>
 
 </html>

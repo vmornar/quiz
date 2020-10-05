@@ -10,7 +10,7 @@ function pad(n, size) {
 }
 
 function updateTime() {
-  $("#time").html(Math.floor(seconds / 60) + ":" + pad (seconds % 60, 2));
+  $("#time").html(Math.floor(seconds / 60) + ":" + pad(seconds % 60, 2));
   seconds++;
 }
 
@@ -47,7 +47,7 @@ function addUser(userId) {
   if ($("#" + userId).length == 0) {
     $("#answers").append("<span id='" + userId + "' class='user'>" + userId + "</span>");
     $("#" + userId).data("active", true);
-    $("#answers").children("span").each(function(idx, itm) {
+    $("#answers").children("span").each(function (idx, itm) {
       if ($(itm).attr("id") > userId) {
         $("#" + userId).insertBefore(itm);
         return;
@@ -110,7 +110,7 @@ function onMessage(msg) {
       addUser(o.userId);
       break;
     case "Answers":
-      $("#answers").children("span").each(function(idx, itm) {
+      $("#answers").children("span").each(function (idx, itm) {
         $(itm).data("answer", "");
       });
       for (var key in o.answers) {
@@ -124,14 +124,14 @@ function onMessage(msg) {
   }
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
   connect();
 });
 
 function joinQuiz() {
   $("#time").html("");
   $("#answers").html("");
-  connect(function() {
+  connect(function () {
     ws.sendJSON({
       cmd: "JoinQuizAsLecturer",
       quizId: $("#quizId").val()
@@ -148,7 +148,7 @@ function clearQuiz() {
 }
 
 function newQuiz() {
-  connect(function() {
+  connect(function () {
     $("#userCount").html("0");
     $("#answerCount").html("0");
     $("#answers").html("");
@@ -177,11 +177,11 @@ function prevQuestion() {
 
 function showAnswersList(inMode) {
   var correctAnswer = $("#correctAnswer").val().toUpperCase();
-  $("#answers").children("span").each(function(idx, itm) {
+  $("#answers").children("span").each(function (idx, itm) {
     if (inMode == 1) {
       $(itm).html($(itm).attr("id"));
     } else {
-      $(itm).html($(itm).data("answer"));     
+      $(itm).html($(itm).data("answer"));
     }
     if (correctAnswer > "") {
       if ($(itm).data("answer") > "") {
@@ -229,16 +229,16 @@ function toggle(status) {
 
 function showAnswersGraph() {
   setMode(3);
-  var data = new Array(5);
-  var labels = new Array(5);
-  var backgroundColors = new Array(5).fill($("#correctAnswer").val() > "" ? "#ff0000" : "#00bfff");
-  for (var i = 0; i < 5; i++) {
+  var data = new Array(7);
+  var labels = new Array(7);
+  var backgroundColors = new Array(7).fill($("#correctAnswer").val() > "" ? "#ff0000" : "#00bfff");
+  for (var i = 0; i < 7; i++) {
     labels[i] = String.fromCharCode(65 + i);
     if (labels[i] == $("#correctAnswer").val()) backgroundColors[i] = "#008000"
     data[i] = 0;
   }
   //data = [10, 15, 20, 14, 4];
-  $("#answers").children("span").each(function(idx, itm) {
+  $("#answers").children("span").each(function (idx, itm) {
     var answer = $(itm).data("answer");
     if (labels.indexOf(answer) >= 0) {
       ++data[answer.charCodeAt(0) - 65];
@@ -250,7 +250,7 @@ function showAnswersGraph() {
   myChart = new Chart($("#chartCanvas"), {
     type: 'bar',
     data: {
-      labels: ["A", "B", "C", "D", "E"],
+      labels: ["A", "B", "C", "D", "E", "F", "G"],
       datasets: [{
         //label: 'Answers',
         data: data,
