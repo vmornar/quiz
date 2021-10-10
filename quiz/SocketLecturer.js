@@ -70,6 +70,10 @@ function authenticate() {
 function onMessage(msg) {
   var o = JSON.parse(msg.data);
   switch (o.cmd) {
+    case "Blur":
+      //$("#" + o.userId).data("active", false);
+      $("#" + o.userId).addClass("blurred");
+      break;
     case "Auth":
       $("#rest").show();
       $("#login").hide();
@@ -95,7 +99,8 @@ function onMessage(msg) {
       break;
     case "Answer":
       $("#" + o.userId).data("answer", o.answer);
-      $("#" + o.userId)[0].className = "user answered";
+      //$("#" + o.userId)[0].className("user answered");
+      $("#" + o.userId).addClass("answered");
       //if (mode == 3) showAnswersGraph();
       if (mode == 2) $("#" + o.userId).html(o.answer);
       break;

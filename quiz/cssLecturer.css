@@ -27,6 +27,10 @@ a {
   color: red;
 }
 
+.blurred {
+  color: fuchsia;
+}
+
 .status {
   color: green;
 }

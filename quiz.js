@@ -24,7 +24,7 @@ popis = JSON.parse(popis);
 
 function saveQuiz(quizId) {
   var s = JSON.stringify(quizzes[quizId]);
-  fs.writeFile("Storage/" + quizId + ".dat", s, function(err) {
+  fs.writeFile("Storage/" + quizId + ".dat", s, function (err) {
     if (err) sendMessage(lecturers[quizId], err, "error");
   });
 }
@@ -49,20 +49,20 @@ function closeQuiz(socket) {
   }
 }
 
-router.use(function(req, res, next) {
+router.use(function (req, res, next) {
   if (!req.url.startsWith("/quiz")) req.url = "/quiz" + req.url;
   next();
 });
 
-router.get("/quiz", function(request, response) {
+router.get("/quiz", function (request, response) {
   response.sendFile(__dirname + "/quiz/index.html");
 });
 
-router.get("/quiz/lecturer", function(request, response) {
+router.get("/quiz/lecturer", function (request, response) {
   response.sendFile(__dirname + "/quiz/indexLecturer.html");
 });
 
-router.get("/quiz/download", function(request, response) {
+router.get("/quiz/download", function (request, response) {
   var q = quizzes[request.query.quizId];
 
   if (q != null) {
@@ -106,13 +106,13 @@ function checkUser(socket, o, joinQuiz) {
     // serviceUrl: "https://some.site/someService?id=" returns ime, prezime
     let st = popis.List1.find(x => x.B == o.userId);
     if (st != null) {
-      joinQuiz(socket, o, o.userId, st.D + " " + st.C );
+      joinQuiz(socket, o, o.userId, st.D + " " + st.C);
       return;
     }
     request({
-        url: params.serviceUrl + o.userId
-      },
-      function(error, response, body) {
+      url: params.serviceUrl + o.userId
+    },
+      function (error, response, body) {
         var resp = JSON.parse(body);
         if (resp.length > 0) {
           joinQuiz(socket, o, o.userId, resp[0].ime + " " + resp[0].prezime);
@@ -203,23 +203,30 @@ function broadcast(data) {
   });
 }
 
-var webServer = app.listen(port, function() {
+var webServer = app.listen(port, function () {
 
   wsServer = new ws.Server({
     server: webServer
   });
 
-  wsServer.on('connection', function(webSocket) {
+  wsServer.on('connection', function (webSocket) {
 
     webSocket.lecturer = false;
     webSocket.authenticated = false;
 
-    webSocket.on('message', function(message) {
+    webSocket.on('message', function (message) {
       //console.log(message);
       try {
         var q;
         var o = JSON.parse(message);
         switch (o.cmd) {
+
+          case "Blur":
+            lecturers[this.quizId].sendJSON({
+              cmd: "Blur",
+              userId: this.userId
+            });
+            break;
 
           case "Auth":
             if (o.password == params.lecturerPwd) {
@@ -421,17 +428,17 @@ var webServer = app.listen(port, function() {
 
         }
       } catch (err) {
-        fs.appendFile("log.txt", err.message, function() {});
+        fs.appendFile("log.txt", err.message, function () { });
         sendMessage(this, err.message + "\r\n", "error");
       }
 
     });
 
-    webSocket.on('error', function() {
+    webSocket.on('error', function () {
       closeQuiz(this);
     });
 
-    webSocket.on('close', function() {
+    webSocket.on('close', function () {
       closeQuiz(this);
     });
 
@@ -453,7 +460,7 @@ function clean() {
 
 // try {
 
-fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n", function() {});
+fs.appendFile("log.txt", "Started " + (new Date()).toString() + "\r\n", function () { });
 
 // in params
 // { serviceUrl: 'https://some.site/someService?p=',  lecturerPwd: 'password' }

@@ -57,16 +57,17 @@
     },
     {
       "A": "8.",
-      "B": 7606000184,
+      "B": "7606000184",
       "C": "Graze Saborio",
       "D": "Cyril",
       "E": "cyril.grazesaborio@racunarstvo.hr"
     },
     {
-      "A": "9.",
-      "C": "Jelinčić",
-      "D": "Petra",
-      "E": "petra.jelincic@racunarstvo.hr"
+        "A": "9.",
+        "B": "0177047777",
+        "C": "Jelinčić",
+        "D": "Petra",
+        "E": "petra.jelincic@racunarstvo.hr"
     },
     {
       "A": "10.",
@@ -83,7 +84,7 @@
     },
     {
       "A": "12.",
-      "B": 7606000179,
+      "B": "7606000179",
       "C": "Karataştan",
       "D": "Serkan",
       "E": "serkan.karatastan@racunarstvo.hr"
@@ -132,6 +133,7 @@
     },
     {
       "A": "19.",
+      "B": "0000000100",
       "C": "Nevins III",
       "D": "Larry Daniel",
       "E": "larrydaniel.nevins@racunarstvo.hr"
@@ -152,7 +154,7 @@
     },
     {
       "A": "22.",
-      "B": 7606000158,
+      "B": "7606000158",
       "C": "Song",
       "D": "Hanzhou",
       "E": "hanzhou.song@racunarstvo.hr"
